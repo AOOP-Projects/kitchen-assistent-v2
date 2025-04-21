@@ -20,7 +20,6 @@ public class UserService {
     }
 
     public void save(User user) {
-        // ✅ Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -48,12 +47,10 @@ public class UserService {
         if (user != null) {
             user.setUsername(username);
             user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password)); // Also encode here
+            if (password != null && !password.isEmpty()) {
+                user.setPassword(passwordEncoder.encode(password));
+            }
             userRepository.save(user);
         }
     }
-    public boolean existsByUsername(String username) {
-        return userRepository.findByUsername(username).isPresent();
-    }
-    
 }

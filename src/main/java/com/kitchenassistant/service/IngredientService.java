@@ -23,22 +23,27 @@ public class IngredientService implements IIngredientService {
         this.recipeRepository = recipeRepository;
     }
 
+    @Override
     public void save(Ingredient ingredient) {
         ingredientRepository.save(ingredient); // Ensure this saves the ingredient to the database
     }
 
+    @Override
     public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll(); // Ensure this retrieves data from the database
     }
 
+    @Override
     public Ingredient getById(Long id) {
         return ingredientRepository.findById(id).orElse(null);
     }
 
+    @Override
     public void deleteIngredient(Long id) {
         ingredientRepository.deleteById(id);
     }
 
+    @Override
     public void updateIngredient(Long id, String name, int quantity, Unit unit) {
         Ingredient ingredient = ingredientRepository.findById(id).orElse(null);
         if (ingredient != null) {
@@ -49,6 +54,7 @@ public class IngredientService implements IIngredientService {
         }
     }
 
+    @Override
     public void addIngredient(String name, int quantity, String unit) {
         Unit unitEnum = Unit.valueOf(unit.toUpperCase());
         Ingredient ingredient = new Ingredient(name, quantity, unitEnum);

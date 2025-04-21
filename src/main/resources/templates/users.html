@@ -10,34 +10,32 @@
     <div class="container mt-5">
         <h2 class="mb-4">User List</h2>
         
-        <!-- Form to add a new user -->
+        <!-- Add User Form -->
         <form class="row g-3 mb-4" method="post" th:action="@{/users/add}">
-            <div class="col-md-3 form-floating">
+            <div class="col-md-4 form-floating">
                 <input class="form-control rounded-3 shadow-sm" id="username" name="username" placeholder="Username" required type="text"/>
                 <label for="username">Username</label>
             </div>
-            <div class="col-md-3 form-floating">
+            <div class="col-md-4 form-floating">
                 <input class="form-control rounded-3 shadow-sm" id="email" name="email" placeholder="Email" required type="email"/>
                 <label for="email">Email</label>
             </div>
-            <div class="col-md-3 form-floating">
+            <div class="col-md-4 form-floating">
                 <input class="form-control rounded-3 shadow-sm" id="password" name="password" placeholder="Password" required type="password"/>
                 <label for="password">Password</label>
             </div>
-            <div class="col-md-3">
-                <button class="btn btn-success rounded-pill shadow-sm w-100" type="submit" th:if="${isAdmin}">
-                    Add User
-                </button>
+            <div class="col-md-12">
+                <button class="btn btn-success rounded-pill shadow-sm w-100" type="submit">Add User</button>
             </div>
         </form>
         
+        <!-- User Table -->
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Role</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,15 +44,11 @@
                     <td th:text="${user.id}"></td>
                     <td th:text="${user.username}"></td>
                     <td th:text="${user.email}"></td>
-                    <td th:text="${user.role}"></td>
                     <td>
-                        <!-- Show buttons only if user is admin -->
-                        <button class="btn btn-warning" th:if="${isAdmin}" th:onclick="'window.location.href=\'/users/edit/' + ${user.id} + '\'">
-                            Edit
-                        </button>
-                        <button class="btn btn-danger" th:if="${isAdmin}" th:onclick="'window.location.href=\'/users/delete/' + ${user.id} + '\'">
-                            Delete
-                        </button>
+                        <a class="btn btn-warning btn-sm" th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a>
+                        <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display: inline;">
+                            <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

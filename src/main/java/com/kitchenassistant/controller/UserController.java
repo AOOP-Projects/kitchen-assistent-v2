@@ -2,11 +2,7 @@ package com.kitchenassistant.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.kitchenassistant.model.User;
 import com.kitchenassistant.service.UserService;
@@ -51,7 +47,7 @@ public class UserController {
     public String updateUser(@RequestParam Long id,
                              @RequestParam String username,
                              @RequestParam String email,
-                             @RequestParam String password) {
+                             @RequestParam(required = false) String password) {
         userService.updateUser(id, username, email, password);
         return REDIRECT_USERS;
     }

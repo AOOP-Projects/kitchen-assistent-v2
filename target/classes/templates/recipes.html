@@ -10,29 +10,57 @@
  </head>
  <body class="bg-light">
   <div class="container mt-5">
-   <h1 class="mb-4">
-    Recipe List
-   </h1>
+   <h2 class="mb-4">Recipe List</h2>
+
+   <!-- Add Recipe Form -->
+   <form class="row g-3 mb-4" method="post" th:action="@{/recipes/add}">
+    <div class="col-md-4 form-floating">
+     <input class="form-control rounded-3 shadow-sm" id="name" name="name" placeholder="Name" required type="text"/>
+     <label for="name">Name</label>
+    </div>
+    <div class="col-md-4 form-floating">
+     <select class="form-select rounded-3 shadow-sm" id="category" name="category" required>
+      <option value="" disabled selected>Select a category</option>
+      <option th:each="cat : ${T(com.kitchenassistant.model.ENUMS.RecipeCategory).values()}" 
+              th:value="${cat}" 
+              th:text="${cat}">
+      </option>
+     </select>
+     <label for="category">Category</label>
+    </div>
+    <div class="col-md-4 form-floating">
+     <input class="form-control rounded-3 shadow-sm" id="time" name="time" placeholder="Time (minutes)" required type="number"/>
+     <label for="time">Time (minutes)</label>
+    </div>
+    <div class="col-md-12">
+     <button class="btn btn-success rounded-pill shadow-sm w-100" type="submit">Add Recipe</button>
+    </div>
+   </form>
+
+   <!-- Recipe Table -->
    <table class="table table-bordered table-striped table-hover">
     <thead class="table-light">
      <tr>
-      <th>
-       Name
-      </th>
-      <th>
-       Time
-      </th>
-      <th>
-       Category
-      </th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Time</th>
+      <th>Actions</th>
      </tr>
     </thead>
     <tbody>
-        <tr th:each="r : ${recipes}">
-            <td th:text="${r.name}"></td>
-            <td th:text="${r.time}"></td>
-            <td th:text="${r.category}"></td>
-        </tr>
+     <tr th:each="recipe : ${recipes}">
+      <td th:text="${recipe.id}"></td>
+      <td th:text="${recipe.name}"></td>
+      <td th:text="${recipe.category}"></td>
+      <td th:text="${recipe.time}"></td>
+      <td>
+       <a class="btn btn-warning btn-sm" th:href="@{/recipes/edit/{id}(id=${recipe.id})}">Edit</a>
+       <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post" style="display: inline;">
+        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this recipe?')">Delete</button>
+       </form>
+      </td>
+     </tr>
     </tbody>
    </table>
   </div>

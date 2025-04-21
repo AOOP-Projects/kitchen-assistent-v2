@@ -8,8 +8,6 @@ import com.kitchenassistant.model.Recipe;
 import com.kitchenassistant.model.ENUMS.RecipeCategory;
 import com.kitchenassistant.service.RecipeService;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -24,9 +22,7 @@ public class RecipeController {
 
     @GetMapping
     public String listRecipes(Model model) {
-        List<Recipe> recipes = recipeService.getAllRecipes();
-        System.out.println("Recipes: " + recipes); // Debugging log
-        model.addAttribute("recipes", recipes);
+        model.addAttribute("recipes", recipeService.getAllRecipes());
         return "recipes";
     }
 
@@ -49,7 +45,7 @@ public class RecipeController {
             model.addAttribute("recipe", recipe);
             return "edit-recipe";
         }
-        return REDIRECT_RECIPES;
+        return "redirect:/recipes";
     }
 
     @PostMapping("/edit")
