@@ -1,5 +1,7 @@
 package com.kitchenassistant.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,13 +30,18 @@ public class UserController {
     @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+        model.addAttribute("isAdmin", isAdmin);
+
         return "users";
     }
 
     @PostMapping("/add")
     public String addUser(@RequestParam String username,
-                          @RequestParam String email,
-                          @RequestParam String password) {
+            @RequestParam String email,
+            @RequestParam String password) {
         userService.addUser(username, email, password);
         return REDIRECT_USERS;
     }
@@ -51,9 +58,9 @@ public class UserController {
 
     @PatchMapping("/edit")
     public String updateUser(@RequestParam Long id,
-                             @RequestParam String username,
-                             @RequestParam String email,
-                             @RequestParam String password) {
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String password) {
         userService.updateUser(id, username, email, password);
         return REDIRECT_USERS;
     }
