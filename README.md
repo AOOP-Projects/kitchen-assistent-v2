@@ -1,11 +1,6 @@
 <h1 align="center">
-  Kitchen Assistant v2
+  Kitchen Assistant
 </h1>
-
-<p align="center">
- <img src="https://img.shields.io/static/v1?label=GitHub&message=AOOP-Projects&color=8257E5&labelColor=000000" alt="AOOP-Projects" />
- <img src="https://img.shields.io/static/v1?label=Type&message=Academic Project&color=8257E5&labelColor=000000" alt="Project" />
-</p>
 
 <p align="center">
   A web application built with Spring Boot and MySQL for managing recipes and ingredients. It features CRUD operations, a web interface using Thymeleaf, and REST API access.
@@ -15,7 +10,6 @@
   <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-adopted-practices">Practices</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-features">Features</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-api-endpoints">API</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-license">License</a>
 </p>
 
@@ -30,11 +24,11 @@
 
 #### Codebase by language
 
-- **HTML:** 64.9%  
-- **Java:** 33.5%  
-- **CSS:** 1.6%
+- **HTML:** 
+- **Java:** 
+- **CSS:** 
 
-## Adopted Practices
+## Practices
 
 - MVC architecture
 - RESTful API with controllers and repositories
