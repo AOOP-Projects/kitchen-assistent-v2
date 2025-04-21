@@ -49,10 +49,8 @@ package com.kitchenassistant.controller;
      public String registerUser(@ModelAttribute("user") User user, Model model) {
          if (userService.existsByUsername(user.getUsername())) {
              model.addAttribute("error", "Username already exists. Please choose another one.");
-             return "register";
-         }
- 
-         userService.save(user);  // 🔒 Password is encoded in service
-         return "redirect:/login?registered";
-     }
+            }
+            
+            return "register";
+        }
  }
