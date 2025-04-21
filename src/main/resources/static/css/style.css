@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2em;
+    background: #f8f9fa;
+  }
+  h1, h2 {
+    color: #343a40;
+  }
+  nav a {
+    margin-right: 1em;
+    text-decoration: none;
+    color: #007bff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+  }
+  th, td {
+    padding: 0.5em;
+    border: 1px solid #dee2e6;
+  }
+  input, button {
+    padding: 0.5em;
+    margin-right: 0.5em;
+  }
+  button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #218838;
+  }

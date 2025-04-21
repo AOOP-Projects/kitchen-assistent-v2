@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Sprintboot",
+            "database": "kitchen_assistant",
+            "username": "root",
+            "password": "123123",
+            "connectionTimeout": 60
+        }
+    ],
+    "java.compile.nullAnalysis.mode": "disabled"
+}
