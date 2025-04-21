@@ -53,4 +53,9 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
+    public boolean existsByUsername(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existsByUsername'");
+    }
 }
