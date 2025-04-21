@@ -13,6 +13,25 @@
   <a href="#memo-license">License</a>
 </p>
 
+## How It Works
+
+The system includes a login feature with two types of users:
+
+### 1. Normal User
+- Can **view** recipes, ingredients, and users.
+- **Cannot** add, update, or delete data.
+- Can **logout** at any time.
+
+### 2. Admin
+- Has full access to the system.
+- Can **add**, **edit**, and **delete**:
+  - Recipes
+  - Ingredients
+  - Users
+- Can also **logout** at any time.
+
+This structure ensures proper role-based access control, making the application suitable for both regular users and administrators.
+
 ## Technologies
 
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
