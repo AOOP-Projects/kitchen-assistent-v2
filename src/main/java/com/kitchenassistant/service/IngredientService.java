@@ -1,6 +1,5 @@
 package com.kitchenassistant.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,46 +7,44 @@ import org.springframework.stereotype.Service;
 
 import com.kitchenassistant.model.Ingredient;
 import com.kitchenassistant.model.Recipe;
+import com.kitchenassistant.repository.IngredientRepository;
 import com.kitchenassistant.repository.RecipeRepository;
 
 @Service
 public class IngredientService {
 
-    private List<Ingredient> ingredients = new ArrayList<>();
-    private long nextId = 1;
+    private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
 
-    public IngredientService(RecipeRepository recipeRepository) {
+    public IngredientService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository) {
+        this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
     }
 
-    public List<Ingredient> getAll() {
-        return ingredients;
+    public void save(Ingredient ingredient) {
+        ingredientRepository.save(ingredient);
     }
 
-    public void add(String name, int quantity, String unit) {
-        Ingredient ingredient = new Ingredient(nextId++, name, quantity, unit);
-        ingredients.add(ingredient);
+    public List<Ingredient> getAllIngredients() {
+        return ingredientRepository.findAll();
     }
 
     public Ingredient getById(Long id) {
-        return ingredients.stream()
-                .filter(i -> i.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return ingredientRepository.findById(id).orElse(null);
     }
 
-    public void update(Long id, String name, int quantity, String unit) {
-        Ingredient i = getById(id);
-        if (i != null) {
-            i.setName(name);
-            i.setQuantity(quantity);
-            i.setUnit(unit);
+    public void deleteIngredient(Long id) {
+        ingredientRepository.deleteById(id);
+    }
+
+    public void updateIngredient(Long id, String name, int quantity, String unit) {
+        Ingredient ingredient = ingredientRepository.findById(id).orElse(null);
+        if (ingredient != null) {
+            ingredient.setName(name);
+            ingredient.setQuantity(quantity);
+            ingredient.setUnit(unit);
+            ingredientRepository.save(ingredient);
         }
-    }
-
-    public void delete(long id) {
-        ingredients.removeIf(i -> i.getId() == id);
     }
 
     public List<Recipe> getAllRecipes() {

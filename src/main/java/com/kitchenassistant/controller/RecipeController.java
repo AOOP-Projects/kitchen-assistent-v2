@@ -2,11 +2,7 @@ package com.kitchenassistant.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.kitchenassistant.model.Recipe;
 import com.kitchenassistant.service.RecipeService;
@@ -25,7 +21,6 @@ public class RecipeController {
 
     @GetMapping
     public String listRecipes(Model model) {
-        System.out.println("Recipies" + recipeService.getAllRecipes());
         model.addAttribute("recipes", recipeService.getAllRecipes());
         return "recipes";
     }
@@ -34,13 +29,17 @@ public class RecipeController {
     public String addRecipe(@RequestParam String name,
                             @RequestParam String category,
                             @RequestParam int time) {
-        recipeService.addRecipe(name, category, time);
+        Recipe recipe = new Recipe();
+        recipe.setName(name);
+        recipe.setCategory(category);
+        recipe.setTime(time);
+        recipeService.save(recipe);
         return REDIRECT_RECIPES;
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Recipe recipe = recipeService.getRecipeById(id).orElse(null);
+    public String editRecipeForm(@PathVariable Long id, Model model) {
+        Recipe recipe = recipeService.getById(id);
         if (recipe != null) {
             model.addAttribute("recipe", recipe);
             return "edit-recipe";
@@ -48,7 +47,7 @@ public class RecipeController {
         return REDIRECT_RECIPES;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/edit")
     public String updateRecipe(@RequestParam Long id,
                                @RequestParam String name,
                                @RequestParam String category,

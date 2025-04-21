@@ -2,12 +2,9 @@ package com.kitchenassistant.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import com.kitchenassistant.model.Ingredient;
 import com.kitchenassistant.service.IngredientService;
 
 @Controller
@@ -24,37 +21,41 @@ public class InventoryController {
 
     @GetMapping
     public String listIngredients(Model model) {
-        System.out.println("Ingredients: " + ingredientService.getAll());
-        model.addAttribute("ingredients", ingredientService.getAll());
-        return "ingredients"; // Ensure this matches the Thymeleaf template name
+        model.addAttribute("ingredients", ingredientService.getAllIngredients());
+        return "ingredients";
     }
 
     @PostMapping("/add")
     public String addIngredient(@RequestParam String name,
                                 @RequestParam int quantity,
                                 @RequestParam String unit) {
-        ingredientService.add(name, quantity, unit);
+        Ingredient ingredient = new Ingredient(name, quantity, unit);
+        ingredientService.save(ingredient);
         return REDIRECT_INGREDIENTS;
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("ingredient", ingredientService.getById(id));
-        return "edit-ingredient";
-    }
-
-    @PostMapping("/update/{id}")
-    public String updateIngredient(@PathVariable Long id,
-                                   @RequestParam String name,
-                                   @RequestParam int quantity,
-                                   @RequestParam String unit) {
-        ingredientService.update(id, name, quantity, unit);
+    public String editIngredientForm(@PathVariable Long id, Model model) {
+        Ingredient ingredient = ingredientService.getById(id);
+        if (ingredient != null) {
+            model.addAttribute("ingredient", ingredient);
+            return "edit-ingredient";
+        }
         return REDIRECT_INGREDIENTS;
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/edit")
+    public String updateIngredient(@RequestParam Long id,
+                                   @RequestParam String name,
+                                   @RequestParam int quantity,
+                                   @RequestParam String unit) {
+        ingredientService.updateIngredient(id, name, quantity, unit);
+        return REDIRECT_INGREDIENTS;
+    }
+
+    @PostMapping("/delete/{id}")
     public String deleteIngredient(@PathVariable Long id) {
-        ingredientService.delete(id);
+        ingredientService.deleteIngredient(id);
         return REDIRECT_INGREDIENTS;
     }
 }

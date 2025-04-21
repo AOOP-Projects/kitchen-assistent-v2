@@ -1,7 +1,6 @@
 package com.kitchenassistant.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,32 +16,29 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
+    public void save(Recipe recipe) {
+        recipeRepository.save(recipe);
+    }
+
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    public void addRecipe(String name, String category, int time) {
-        Recipe recipe = new Recipe();
-        recipe.setName(name);
-        recipe.setCategory(category);
-        recipe.setTime(time);
-        recipeRepository.save(recipe);
-    }
-
-    public Optional<Recipe> getRecipeById(Long id) {
-        return recipeRepository.findById(id);
-    }
-
-    public void updateRecipe(Long id, String name, String category, int time) {
-        recipeRepository.findById(id).ifPresent(recipe -> {
-            recipe.setName(name);
-            recipe.setCategory(category);
-            recipe.setTime(time);
-            recipeRepository.save(recipe);
-        });
+    public Recipe getById(Long id) {
+        return recipeRepository.findById(id).orElse(null);
     }
 
     public void deleteRecipe(Long id) {
         recipeRepository.deleteById(id);
+    }
+
+    public void updateRecipe(Long id, String name, String category, int time) {
+        Recipe recipe = recipeRepository.findById(id).orElse(null);
+        if (recipe != null) {
+            recipe.setName(name);
+            recipe.setCategory(category);
+            recipe.setTime(time);
+            recipeRepository.save(recipe);
+        }
     }
 }
