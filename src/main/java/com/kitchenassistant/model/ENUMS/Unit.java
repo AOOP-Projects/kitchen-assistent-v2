@@ -7,6 +7,6 @@ public enum Unit {
     MILLILITERS,
     CUPS,
     PIECES,
-    TEASPOONS,
+    TSP,
     TABLESPOONS
 }

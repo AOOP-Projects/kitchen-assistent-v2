@@ -5,5 +5,6 @@ public enum RecipeCategory {
     LUNCH,
     DINNER,
     SNACK,
-    DESSERT
+    DESSERT, 
+    BRUNCH
 }
