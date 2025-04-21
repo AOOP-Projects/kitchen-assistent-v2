@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.kitchenassistant.model.Ingredient;
 import com.kitchenassistant.model.Recipe;
+import com.kitchenassistant.model.ENUMS.RecipeCategory;
+import com.kitchenassistant.model.ENUMS.Unit;
 import com.kitchenassistant.repository.IngredientRepository;
 import com.kitchenassistant.repository.RecipeRepository;
 
 @Service
-public class IngredientService {
+public class IngredientService implements IIngredientService {
 
     private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
@@ -22,11 +24,11 @@ public class IngredientService {
     }
 
     public void save(Ingredient ingredient) {
-        ingredientRepository.save(ingredient);
+        ingredientRepository.save(ingredient); // Ensure this saves the ingredient to the database
     }
 
     public List<Ingredient> getAllIngredients() {
-        return ingredientRepository.findAll();
+        return ingredientRepository.findAll(); // Ensure this retrieves data from the database
     }
 
     public Ingredient getById(Long id) {
@@ -37,7 +39,7 @@ public class IngredientService {
         ingredientRepository.deleteById(id);
     }
 
-    public void updateIngredient(Long id, String name, int quantity, String unit) {
+    public void updateIngredient(Long id, String name, int quantity, Unit unit) {
         Ingredient ingredient = ingredientRepository.findById(id).orElse(null);
         if (ingredient != null) {
             ingredient.setName(name);
@@ -47,11 +49,17 @@ public class IngredientService {
         }
     }
 
+    public void addIngredient(String name, int quantity, String unit) {
+        Unit unitEnum = Unit.valueOf(unit.toUpperCase());
+        Ingredient ingredient = new Ingredient(name, quantity, unitEnum);
+        ingredientRepository.save(ingredient);
+    }
+
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    public void addRecipe(String name, String category, int time) {
+    public void addRecipe(String name, RecipeCategory category, int time) {
         Recipe recipe = new Recipe();
         recipe.setName(name);
         recipe.setCategory(category);
@@ -63,7 +71,7 @@ public class IngredientService {
         return recipeRepository.findById(id);
     }
 
-    public void updateRecipe(Long id, String name, String category, int time) {
+    public void updateRecipe(Long id, String name, RecipeCategory category, int time) {
         recipeRepository.findById(id).ifPresent(recipe -> {
             recipe.setName(name);
             recipe.setCategory(category);

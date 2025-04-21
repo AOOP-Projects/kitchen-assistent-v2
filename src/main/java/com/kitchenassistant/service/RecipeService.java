@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kitchenassistant.model.Recipe;
+import com.kitchenassistant.model.ENUMS.RecipeCategory;
 import com.kitchenassistant.repository.RecipeRepository;
 
 @Service
@@ -32,13 +33,12 @@ public class RecipeService {
         recipeRepository.deleteById(id);
     }
 
-    public void updateRecipe(Long id, String name, String category, int time) {
-        Recipe recipe = recipeRepository.findById(id).orElse(null);
-        if (recipe != null) {
+    public void updateRecipe(Long id, String name, RecipeCategory category, int time) {
+        recipeRepository.findById(id).ifPresent(recipe -> {
             recipe.setName(name);
             recipe.setCategory(category);
             recipe.setTime(time);
             recipeRepository.save(recipe);
-        }
+        });
     }
 }

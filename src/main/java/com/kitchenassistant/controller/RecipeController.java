@@ -5,7 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.kitchenassistant.model.Recipe;
+import com.kitchenassistant.model.ENUMS.RecipeCategory;
 import com.kitchenassistant.service.RecipeService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/recipes")
@@ -21,7 +24,9 @@ public class RecipeController {
 
     @GetMapping
     public String listRecipes(Model model) {
-        model.addAttribute("recipes", recipeService.getAllRecipes());
+        List<Recipe> recipes = recipeService.getAllRecipes();
+        System.out.println("Recipes: " + recipes); // Debugging log
+        model.addAttribute("recipes", recipes);
         return "recipes";
     }
 
@@ -31,7 +36,7 @@ public class RecipeController {
                             @RequestParam int time) {
         Recipe recipe = new Recipe();
         recipe.setName(name);
-        recipe.setCategory(category);
+        recipe.setCategory(RecipeCategory.valueOf(category.toUpperCase()));
         recipe.setTime(time);
         recipeService.save(recipe);
         return REDIRECT_RECIPES;
@@ -52,7 +57,8 @@ public class RecipeController {
                                @RequestParam String name,
                                @RequestParam String category,
                                @RequestParam int time) {
-        recipeService.updateRecipe(id, name, category, time);
+        RecipeCategory recipeCategory = RecipeCategory.valueOf(category.toUpperCase());
+        recipeService.updateRecipe(id, name, recipeCategory, time);
         return REDIRECT_RECIPES;
     }
 

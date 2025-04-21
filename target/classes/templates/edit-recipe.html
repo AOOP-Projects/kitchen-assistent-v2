@@ -26,6 +26,24 @@
          </label>
         </div>
         <div class="form-floating mb-3">
+         <input class="form-control rounded-3 shadow-sm" id="time" name="time" placeholder="Time" required th:value="${recipe.time}" type="number"/>
+         <label for="time">
+          Time (minutes)
+         </label>
+        </div>
+        <div class="form-floating mb-3">
+         <select class="form-select rounded-3 shadow-sm" id="category" name="category" required>
+          <option value="" disabled>
+           Select a category
+          </option>
+          <option th:each="cat : ${T(com.kitchenassistant.model.ENUMS.RecipeCategory).values()}" th:value="${cat}" th:text="${cat}" th:selected="${recipe.category == cat}">
+          </option>
+         </select>
+         <label for="category">
+          Category
+         </label>
+        </div>
+        <div class="form-floating mb-3">
          <textarea class="form-control rounded-3 shadow-sm" id="instructions" name="instructions" placeholder="Instructions" style="height: 150px" th:text="${recipe.instructions}"></textarea>
          <label for="instructions">
           Instructions
