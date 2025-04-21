@@ -50,7 +50,7 @@ public class IngredientController {
                                    @RequestParam int quantity,
                                    @RequestParam String unit) {
         ingredientService.updateIngredient(id, name, quantity, Unit.valueOf(unit.toUpperCase()));
-        return REDIRECT_INGREDIENTS;
+        return "redirect:/ingredients";
     }
 
     @PostMapping("/delete/{id}")

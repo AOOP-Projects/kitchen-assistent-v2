@@ -35,6 +35,7 @@ public class RecipeController {
         recipe.setCategory(RecipeCategory.valueOf(category.toUpperCase()));
         recipe.setTime(time);
         recipeService.save(recipe);
+        System.out.println("Recipe: " + recipe);
         return REDIRECT_RECIPES;
     }
 

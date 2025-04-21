@@ -13,7 +13,8 @@
      <div class="card shadow rounded-3">
       <div class="card-body p-4">
        <h2 class="text-center mb-4">Edit Ingredient</h2>
-       <form method="post" th:action="@{/ingredients/update/{id}(id=${ingredient.id})}">
+       <form method="post" th:action="@{/ingredients/edit}">
+        <input type="hidden" name="id" th:value="${ingredient.id}" />
         <div class="form-floating mb-3">
          <input class="form-control rounded-3 shadow-sm" id="name" name="name" placeholder="Name" required th:value="${ingredient.name}" type="text"/>
          <label for="name">Name</label>
@@ -28,7 +29,7 @@
           <option th:each="u : ${T(com.kitchenassistant.model.ENUMS.Unit).values()}" 
                   th:value="${u}" 
                   th:text="${u}" 
-                  th:selected="${ingredient.unit == u}">
+                  th:selected="${u.equals(ingredient.unit)}">
           </option>
          </select>
          <label for="unit">Unit</label>
