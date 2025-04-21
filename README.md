@@ -44,3 +44,8 @@
 - Web interface using Thymeleaf templates
 - REST API for external integrations or frontend consumption
 
+## License
+This project is licensed under the MIT License. You are free to use, modify, and distribute the code as long as appropriate credit is given.
+
+For commercial use or licensing inquiries, please contact: [AOOP-Projects]
+
