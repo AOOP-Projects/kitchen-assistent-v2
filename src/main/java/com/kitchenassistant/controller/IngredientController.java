@@ -1,5 +1,7 @@
 package com.kitchenassistant.controller;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kitchenassistant.model.Ingredient;
 import com.kitchenassistant.model.ENUMS.Unit;
 import com.kitchenassistant.service.IIngredientService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @Controller
 @RequestMapping("/ingredients")
@@ -21,15 +24,24 @@ public class IngredientController {
     }
 
     @GetMapping
-    public String listIngredients(Model model) {
+    public String listIngredients(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("ingredients", ingredientService.getAllIngredients());
+
+        if (userDetails != null) {
+            String role = userDetails.getAuthorities().stream()
+                    .findFirst()
+                    .map(GrantedAuthority::getAuthority)
+                    .orElse("ROLE_USER");
+            model.addAttribute("role", role);
+        }
+
         return "ingredients";
     }
 
     @PostMapping("/add")
     public String addIngredient(@RequestParam String name,
-                                @RequestParam int quantity,
-                                @RequestParam String unit) {
+            @RequestParam int quantity,
+            @RequestParam String unit) {
         ingredientService.addIngredient(name, quantity, unit);
         return REDIRECT_INGREDIENTS;
     }
@@ -46,9 +58,9 @@ public class IngredientController {
 
     @PostMapping("/edit")
     public String updateIngredient(@RequestParam Long id,
-                                   @RequestParam String name,
-                                   @RequestParam int quantity,
-                                   @RequestParam String unit) {
+            @RequestParam String name,
+            @RequestParam int quantity,
+            @RequestParam String unit) {
         ingredientService.updateIngredient(id, name, quantity, Unit.valueOf(unit.toUpperCase()));
         return "redirect:/ingredients";
     }

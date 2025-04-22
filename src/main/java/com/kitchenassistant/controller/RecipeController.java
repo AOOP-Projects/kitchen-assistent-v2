@@ -1,5 +1,7 @@
 package com.kitchenassistant.controller;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kitchenassistant.model.Recipe;
 import com.kitchenassistant.model.ENUMS.RecipeCategory;
 import com.kitchenassistant.service.RecipeService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @Controller
 @RequestMapping("/recipes")
@@ -21,15 +24,24 @@ public class RecipeController {
     }
 
     @GetMapping
-    public String listRecipes(Model model) {
+    public String listRecipes(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("recipes", recipeService.getAllRecipes());
+
+        if (userDetails != null) {
+            String role = userDetails.getAuthorities().stream()
+                    .findFirst()
+                    .map(GrantedAuthority::getAuthority)
+                    .orElse("ROLE_USER");
+            model.addAttribute("role", role);
+        }
+
         return "recipes";
     }
 
     @PostMapping("/add")
     public String addRecipe(@RequestParam String name,
-                            @RequestParam String category,
-                            @RequestParam int time) {
+            @RequestParam String category,
+            @RequestParam int time) {
         Recipe recipe = new Recipe();
         recipe.setName(name);
         recipe.setCategory(RecipeCategory.valueOf(category.toUpperCase()));
@@ -51,9 +63,9 @@ public class RecipeController {
 
     @PostMapping("/edit")
     public String updateRecipe(@RequestParam Long id,
-                               @RequestParam String name,
-                               @RequestParam String category,
-                               @RequestParam int time) {
+            @RequestParam String name,
+            @RequestParam String category,
+            @RequestParam int time) {
         RecipeCategory recipeCategory = RecipeCategory.valueOf(category.toUpperCase());
         recipeService.updateRecipe(id, name, recipeCategory, time);
         return REDIRECT_RECIPES;
